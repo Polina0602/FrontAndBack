@@ -74,5 +74,20 @@ namespace FrontAndBack.Services
             return _playerList.FirstOrDefault(x => x.ID == id);
 
         }
+
+        public Player UpdatePlayer(Player updatePlayer)
+        {
+            Player player = _playerList.FirstOrDefault(x => x.ID == updatePlayer.ID);
+
+            if(player != null)
+            {
+                player.Name = updatePlayer.Name;
+                player.Email = updatePlayer.Email;
+                player.PhotoPath = updatePlayer.PhotoPath;
+                player.Role = updatePlayer.Role;
+            }
+
+            return player;
+        }
     }
 }

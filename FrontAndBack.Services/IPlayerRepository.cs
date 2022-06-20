@@ -11,5 +11,6 @@ namespace FrontAndBack.Services
     {
         IEnumerable<Player> GetAllPlayers();
         Player GetPlayerById(int id);
+        Player UpdatePlayer(Player updatePlayer);
     }
 }

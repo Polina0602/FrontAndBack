@@ -3,6 +3,12 @@
 @{
 
     <h1>Players</h1>
+    @if(TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success text-center">
+            @TempData["SuccessMessage"]
+        </div>
+    }
 
     <div class="row">
         @foreach(var item in Model.Players)
