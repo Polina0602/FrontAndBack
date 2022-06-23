@@ -64,6 +64,23 @@ namespace FrontAndBack.Services
             };
         }
 
+        public Player AddPlayer(Player newPlayer)
+        {
+            newPlayer.ID = _playerList.Max(x => x.ID) + 1;
+            _playerList.Add(newPlayer);
+            return newPlayer;
+
+        }
+
+        public Player DeletePlayer(int id)
+        {
+            Player playerToDelete = _playerList.FirstOrDefault(x => x.ID == id);
+            if(playerToDelete != null)
+            _playerList.Remove(playerToDelete);
+
+            return playerToDelete;
+        }
+
         public IEnumerable<Player> GetAllPlayers()
         {
             return _playerList;
@@ -73,6 +90,16 @@ namespace FrontAndBack.Services
         {
             return _playerList.FirstOrDefault(x => x.ID == id);
 
+        }
+
+        public IEnumerable<RoleHeadCount> PlayerCountByRole()
+        {
+            return _playerList.GroupBy(x => x.Role)
+                            .Select(x => new RoleHeadCount()
+                            {
+                                Role = x.Key.Value,
+                                Count = x.Count()
+                            }).ToList();
         }
 
         public Player UpdatePlayer(Player updatePlayer)

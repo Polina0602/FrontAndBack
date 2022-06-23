@@ -15,18 +15,24 @@ namespace FrontAndBack.Pages.Players
             _playerRepository = playerRepository;
             _webHostEnvironment = webHostEnvironment;
         }
-
+        [BindProperty]
         public Player Player { get; set; }
         [BindProperty]
-        public IFormFile Photo { get; set; }
+        public IFormFile? Photo { get; set; }
         [BindProperty]
         public bool Notify { get; set; }
         public string Message { get; set; }
 
-        public IActionResult OnGet(int id)
+        public IActionResult OnGet(int? id)
         {
-            Player = _playerRepository.GetPlayerById(id);
-
+            if (id.HasValue)
+            {
+                Player = _playerRepository.GetPlayerById(id.Value);
+            }
+            else
+            {
+                Player = new Player();
+            }
             if(Player == null)
             {
                 return RedirectToPage("/NotFound");
@@ -36,23 +42,35 @@ namespace FrontAndBack.Pages.Players
 
         }
 
-        public IActionResult OnPost(Player player)
+        public IActionResult OnPost()
         {
-
-            if (Photo != null)
+            if (ModelState.IsValid)
             {
-                if(player.PhotoPath != null)
+                if (Photo != null)
                 {
-                    string filePath = Path.Combine(_webHostEnvironment.WebRootPath, "images", player.PhotoPath);
-                    System.IO.File.Delete(filePath);
+                    if (Player.PhotoPath != null)
+                    {
+                        string filePath = Path.Combine(_webHostEnvironment.WebRootPath, "images", Player.PhotoPath);
+                        System.IO.File.Delete(filePath);
+                    }
+                    Player.PhotoPath = ProcessUploadFile();
                 }
-                player.PhotoPath = ProcessUploadFile();
+
+                if (Player.ID > 0)
+                {
+                    Player = _playerRepository.UpdatePlayer(Player);
+
+                    TempData["SuccessMessage"] = $"Update {Player.Name} succesfull!";
+                }
+                else 
+                {
+                    Player = _playerRepository.AddPlayer(Player);
+                    TempData["SuccessMessage"] = $"Create {Player.Name} succesfull!";
+                }
+
+                return RedirectToPage("Players");
             }
-            Player = _playerRepository.UpdatePlayer(player);
-
-            TempData["SuccessMessage"] = $"Update {Player.Name} succesfull!";
-
-            return RedirectToPage("Players");
+                return Page();
         }
 
         public void OnPostUpdateNotificationPreferences(int id)
