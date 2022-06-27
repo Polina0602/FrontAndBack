@@ -7,7 +7,8 @@
 
 <div class="row justify-content-center m-3">
     <div class="col col-lg-8">
-        @await Component.InvokeAsync("HeadCount");
+        @*@await Component.InvokeAsync("HeadCount", new {role = Model.player.Role})*@
+        <vc:head-count role = "@Model.player.Role"></vc:head-count>
     </div>
 </div>
 

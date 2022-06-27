@@ -1,10 +1,16 @@
 
 using FrontAndBack.Services;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddSingleton<IPlayerRepository, MockPlayerRepository>();
+builder.Services.AddDbContextPool<AppDBContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("PlayerDBConnection"));
+});
+//builder.Services.AddSingleton<IPlayerRepository, MockPlayerRepository>();
+builder.Services.AddScoped<IPlayerRepository, SQLPlayerRepository>();
 builder.Services.AddRazorPages();
 builder.Services.Configure <RouteOptions>(options =>
   {

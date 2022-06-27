@@ -14,6 +14,6 @@ namespace FrontAndBack.Services
         Player UpdatePlayer(Player updatePlayer);
         Player AddPlayer(Player newPlayer);
         Player DeletePlayer(int id);
-        IEnumerable<RoleHeadCount> PlayerCountByRole();
+        IEnumerable<RoleHeadCount> PlayerCountByRole(Role? role);
     }
 }

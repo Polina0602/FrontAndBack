@@ -1,4 +1,5 @@
-﻿using FrontAndBack.Services;
+﻿using FrontAndBack.Models;
+using FrontAndBack.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FrontAndBack.ViewComponents
@@ -12,9 +13,9 @@ namespace FrontAndBack.ViewComponents
             _playerRepository = playerRepository;
         }
 
-        public IViewComponentResult Invoke()
+        public IViewComponentResult Invoke(Role? role = null)
         {
-            var result = _playerRepository.PlayerCountByRole();
+            var result = _playerRepository.PlayerCountByRole(role);
             return View(result);
         }
         

@@ -92,9 +92,16 @@ namespace FrontAndBack.Services
 
         }
 
-        public IEnumerable<RoleHeadCount> PlayerCountByRole()
+        public IEnumerable<RoleHeadCount> PlayerCountByRole(Role? role)
         {
-            return _playerList.GroupBy(x => x.Role)
+            IEnumerable<Player> query = _playerList;
+
+            if (role.HasValue)
+            {
+                query = query.Where(x => x.Role == role.Value);
+            }
+
+            return query.GroupBy(x => x.Role)
                             .Select(x => new RoleHeadCount()
                             {
                                 Role = x.Key.Value,
