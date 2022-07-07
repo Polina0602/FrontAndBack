@@ -22,6 +22,8 @@ namespace FrontAndBack.Models
         public string? PhotoPath { get; set; }
 
         public Role? Role { get; set; }
+        [Required]
+        public string Password { get; set; }
 
     }
 }

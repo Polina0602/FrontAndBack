@@ -39,6 +39,10 @@ namespace FrontAndBack.Services.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("PhotoPath")
                         .HasColumnType("nvarchar(max)");
 

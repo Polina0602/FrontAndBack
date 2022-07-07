@@ -40,13 +40,15 @@ namespace FrontAndBack.Pages.Players
 public class DeleteModel : PageModel
 {
     private readonly IPlayerRepository _playerRepository;
+    private readonly IWebHostEnvironment _webHostEnvironment;
 
-    public DeleteModel(IPlayerRepository playerRepository)
+    public DeleteModel(IPlayerRepository playerRepository, IWebHostEnvironment webHostEnvironment)
     {
         _playerRepository = playerRepository;
+        _webHostEnvironment = webHostEnvironment;
     }
 
-    [BindProperty]
+        [BindProperty]
     public Player Player { get; set; }
     public IActionResult OnGet(int id)
     {
@@ -62,7 +64,15 @@ public class DeleteModel : PageModel
     {
         Player deletedPlayer = _playerRepository.DeletePlayer(Player.ID);
 
-        if (deletedPlayer == null)
+                if (deletedPlayer.PhotoPath != null)
+                {
+                    string filePath = Path.Combine(_webHostEnvironment.WebRootPath, "images", deletedPlayer.PhotoPath);
+
+                    if (deletedPlayer.PhotoPath != "noimage.png")
+                        System.IO.File.Delete(filePath);
+                }
+
+            if (deletedPlayer == null)
             return RedirectToPage("/NotFound");
 
         return RedirectToPage("Players");

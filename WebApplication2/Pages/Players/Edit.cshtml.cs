@@ -51,6 +51,8 @@ namespace FrontAndBack.Pages.Players
                     if (Player.PhotoPath != null)
                     {
                         string filePath = Path.Combine(_webHostEnvironment.WebRootPath, "images", Player.PhotoPath);
+
+                        if(Player.PhotoPath != "noimage.png") 
                         System.IO.File.Delete(filePath);
                     }
                     Player.PhotoPath = ProcessUploadFile();

@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FrontAndBack.Services.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    [Migration("20220627090308_AnnotationModelAdded")]
-    partial class AnnotationModelAdded
+    [Migration("20220706080303_InitNewBase")]
+    partial class InitNewBase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -40,6 +40,10 @@ namespace FrontAndBack.Services.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhotoPath")
                         .HasColumnType("nvarchar(max)");
